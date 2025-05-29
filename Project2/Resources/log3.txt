@@ -1,0 +1,10 @@
+log3.log,20250418
+2025-05-20 10:01:05 INFO    [AuthService] - User login successful for user: alice
+2025-05-20 10:01:12 WARNING [PaymentGateway] - Payment gateway response delayed for order #123461
+2025-05-20 10:01:15 INFO    [OrderService] - Order #123462 placed successfully
+2025-05-20 10:01:22 INFO    [InventoryService] - Inventory updated for product: SKU-8742
+2025-05-20 10:01:27 ERROR   [BillingService] - Payment failed for invoice #567804 due to card error
+2025-05-20 10:01:35 INFO    [NotificationService] - Email sent to user: bobsmith
+2025-05-20 10:01:42 INFO    [ShippingService] - Shipment created for order #123463
+2025-05-20 10:01:49 WARNING [UserService] - Invalid password attempt for user: mallory
+8
