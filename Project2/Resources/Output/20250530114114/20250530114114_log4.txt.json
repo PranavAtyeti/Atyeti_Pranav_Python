@@ -1,0 +1,33 @@
+{
+  "file_name": "log4.txt",
+  "date_of_creation": "20250530114114",
+  "log_levels": {
+    "info": {
+      "messages": [
+        "2025-05-20 10:01:54 INFO    [AuthService] - User logout detected for user: charlie",
+        "2025-05-20 10:02:01 INFO    [OrderService] - Order #123464 cancelled by user",
+        "2025-05-20 10:02:14 INFO    [NotificationService] - SMS notification queued for user: eve",
+        "2025-05-20 10:02:21 INFO    [BillingService] - Invoice #567805 generated successfully",
+        "2025-05-20 10:02:34 INFO    [UserService] - New user registered: johndoe",
+        "2025-05-20 10:02:48 INFO    [OrderService] - Order #123467 placed successfully",
+        "2025-05-20 10:02:55 INFO    [InventoryService] - Stock low for product: SKU-4433",
+        "2025-05-20 10:03:01 INFO    [AuthService] - User login successful for user: eve",
+        "2025-05-20 10:03:08 INFO    [NotificationService] - Push notification failed for user: alice"
+      ],
+      "count": 9
+    },
+    "error": {
+      "messages": [
+        "2025-05-20 10:02:07 ERROR   [InventoryService] - Product out of stock: SKU-9981",
+        "2025-05-20 10:02:41 ERROR   [PaymentGateway] - Payment failed for order #123466 due to insufficient funds"
+      ],
+      "count": 2
+    },
+    "warning": {
+      "messages": [
+        "2025-05-20 10:02:28 WARNING [ShippingService] - Shipping delayed for order #123465 due to weather"
+      ],
+      "count": 1
+    }
+  }
+}

@@ -9,7 +9,7 @@ def main():
 
     session = db.get_session()
 
-    log_directory = r"C:\Users\PranavChothave\OneDrive - Atyeti Inc\Desktop\pair_prog\Project2\Resources"
+    log_directory = r"C:\Users\PranavChothave\OneDrive - Atyeti Inc\Desktop\pair_prog\Project2\Resources\Input"
     processor = LogProcessor(directory=log_directory, session=session)
     processor.execute()
 

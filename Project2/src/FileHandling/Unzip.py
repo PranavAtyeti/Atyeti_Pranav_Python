@@ -29,8 +29,5 @@ class Unzip:
         for file in all_extracted_files:
             print(os.path.basename(file))
 
-        return all_extracted_files
+        return extract_to
 
-path = r"C:\Users\PranavChothave\OneDrive - Atyeti Inc\Desktop\pair_prog\Project2\Resources"
-obj1 = Unzip(path)
-obj1.unzip_all()

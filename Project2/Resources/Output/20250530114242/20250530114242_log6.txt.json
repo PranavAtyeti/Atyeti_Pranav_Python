@@ -1,0 +1,27 @@
+{
+  "file_name": "log6.txt",
+  "date_of_creation": "20250530114242",
+  "log_levels": {
+    "info": {
+      "messages": [
+        "2025-05-20 10:02:17 INFO  [OrderService] - Order #123456 placed successfully",
+        "2025-05-20 10:02:25 INFO  [InventoryService] - Inventory updated for product: SKU-99812025-05-20 10:02:17 INFO  [OrderService] - Order #123456 placed successfully",
+        "2025-05-20 10:02:25 INFO  [InventoryService] - Inventory updated for product: SKU-9981",
+        "2025-05-20 10:02:25 INFO  [InventoryService] - Inventory updated for product: SKU-9981"
+      ],
+      "count": 4
+    },
+    "error": {
+      "messages": [],
+      "count": 0
+    },
+    "warning": {
+      "messages": [
+        "2025-05-20 10:02:20 WARNING  [PaymentGateway] - Payment gateway response delayed for order #123457",
+        "2025-05-20 10:02:20 WARNING  [PaymentGateway] - Payment gateway response delayed for order #123457",
+        "2025-05-20 10:02:20 WARNING  [PaymentGateway] - Payment gateway response delayed for order #123457"
+      ],
+      "count": 3
+    }
+  }
+}

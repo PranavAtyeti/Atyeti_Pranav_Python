@@ -1,0 +1,25 @@
+{
+  "file_name": "log2.txt",
+  "date_of_creation": "20250530114114",
+  "log_levels": {
+    "info": {
+      "messages": [
+        "2025-05-20 10:02:30 INFO  [NotificationService] - Email sent to user: johndoe@example.com"
+      ],
+      "count": 1
+    },
+    "error": {
+      "messages": [
+        "2025-05-20 10:02:27 ERROR  [DatabaseConnector] - Failed to connect to database: timeout after 5000ms",
+        "2025-05-20 10:02:40 ERROR  [OrderService] - Failed to place order #123458 due to insufficient stock"
+      ],
+      "count": 2
+    },
+    "warning": {
+      "messages": [
+        "2025-05-20 10:02:35 WARNING  [CacheManager] - Cache miss for key: user-session-456"
+      ],
+      "count": 1
+    }
+  }
+}
