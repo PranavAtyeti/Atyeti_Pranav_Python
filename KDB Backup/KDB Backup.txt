@@ -266,8 +266,9 @@ corresponding test file (functionName.quke) to test if working correctly*.
 
 ```q
 //your code here - or work in the scratchpad
- 
-extractBrokerId:{[msg] parts:"-" vs msg; res:$[parts[0]~"CME"; last parts; parts 1]; res:"J"$res}
+
+extractBrokerId:{[message] parts:"-" vs message; brokerStr: $[parts[0]~"CME"; last parts; parts 1];"J"$brokerStr}
+
 
 extractBrokerId["CME-TSLA20200920C1700-709"]
 extractBrokerId["ISE-708-TSLA20200920C1700"]
@@ -288,6 +289,16 @@ in the column*
 
 ```q
 //your code here - or work in the scratchpad
+
+
+messages[`broker_id] : extractBrokerId each messages[`exch_message]
+meta optRef
+meta messages
+ 
+messages[`trade_id] : string each messages[`trade_id]
+meta messages
+
+
 ```
 
 Verify that the modifications you've made are in place:
@@ -382,6 +393,22 @@ This is illustrated with the following sample data:
 
 ```q
 //your code here - or work in the scratchpad
+
+
+tradeData: select from trade
+nbboData: select from nbbo
+
+meta tradeData
+
+
+lastDate: max exec date from tradeData
+tradesOnLastDate: select from trade where date = lastDate
+
+
+nbboForJoin: select option_id, time, bid, ask from nbbo
+tradeContext: aj[`option_id`time; tradesOnLastDate; nbboForJoin]
+
+
 ```
 
 
@@ -400,6 +427,13 @@ corresponding test file (functionName.quke) to test if working correctly*.
 
 ```q
 //your code here - or work in the scratchpad
+meta tradeContext
+
+classifyTrades: {t: x;t: update exQuality: ((side = `B) & price <= ask) | ((side = `S) & price >= bid) from t;t}
+
+
+//classifyTrades tradeContext
+
 ```
 
 Now we have a means to identify the "bad" trades that is applicable beyond just the `tradeContext` 
@@ -410,6 +444,13 @@ table.
 our `tradeContext` table that had poorer than market execution. Store these trades in a variable `badTrades`.** 
 ```q
 //your code here - or work in the scratchpad
+
+tradeContextWithQuality: classifyTrades tradeContext
+
+lastDate: max tradeContextWithQuality[`date]
+
+badTrades: select from tradeContextWithQuality where date = lastDate, not exQuality
+
 ```
 
 
@@ -420,11 +461,12 @@ at the following `getenv``AX_WORKSPACE` location :**
 ```q
 getenv`AX_WORKSPACE  //execute this to see the folder you need to save the CSV to
 ```
-
+ 
 ```q
 //your code here - or work in the scratchpad
+save `$getenv[`AX_WORKSPACE],"/badTrades.csv"
 ```
-
+ 
 We should now see our csv file in that folder: 
 ```q
 //test if successful 
@@ -460,6 +502,13 @@ Store this in a variable called `edge15`.**
 
 ```q
 //your code here - or work in the scratchpad
+lastDate: exec max date from tradeContext
+
+tc: select from tradeContext where date = lastDate
+ 
+edge15: select edge:sum edge, qty: sum qty, numTrds:count i by minute: 15 xbar time.minute from tc where time >= 09:
+meta edge15
+
 ```
 
 **4.2 Use the visual Inspector to create a chart of the above `edge15` (right click -> inspector). Choose 
@@ -483,6 +532,9 @@ Final output returned from function should be in ascending order by the `orderCo
 corresponding test file (functionName.quke) to test if working correctly*.
 ```q
 //your code here - or work in the scratchpad
+returnN:{[orderColumn;order;N;t] $[order=`bottom;select[N] from orderColumn xasc t;select[-1*N] from orderColumn xasc t]}
+
+
 ```
 
 
@@ -493,6 +545,8 @@ separately for traded quantity.
 `top5EdgeTimes` which returns the 5 best (i.e. most profitable) 15 minutes in the last trade date for edge.** 
 ```q
 //your code here - or work in the scratchpad
+top5EdgeTimes:returnN[`edge;`top;5;edge15]
+
 ```
 
 
@@ -500,6 +554,8 @@ separately for traded quantity.
 last trade date for traded qty volume.**
 ```q
 //your code here - or work in the scratchpad
+bottom5QtyTimes:returnN[`qty;`bottom;5;edge15]
+
 ```
 
 
@@ -510,6 +566,7 @@ quantity and the edge be quantified.
 (or otherwise) as a dictionary and store this in a variable `timeSeries`.**
 ```q
 //your code here - or work in the scratchpad
+timeSeries:exec edge,qty,numTrds from edge15
 ```
 
 **4.7 Finally, using `timeSeries` (or otherwise) calculate the correlation between the 15 minute timeseries
@@ -522,6 +579,7 @@ the value for `edge` should be 1.**
 
 ```q
 //your code here - or work in the scratchpad
+edgeCor:timeSeries[`edge] cor/: timeSeries
 ```
 
 ### End of Sub Section testing
@@ -544,6 +602,8 @@ edge (`avgEdge`), and min and max volume (`minQty`,`maxQty`) broken down by opti
 should be keyed on the column `option_id`.**
 ```q
 //your code here - or work in the scratchpad
+tradeLastDate:select from trade where date=last date
+optProfile: select numTrds:count i, avgEdge:avg edge, minQty:min qty, maxQty:max qty by option_id from tradeLastDate
 ```
 
 
@@ -559,6 +619,7 @@ collected by that option. Again, the table should be keyed on the column `option
 
 ```q
 //your code here - or work in the scratchpad
+edgeProfile:select numTrds:count i, avgEdge:avg edge, minQty:min qty, maxQty:max qty by option_id from tradeLastDate where edge > (avg;edge) fby option_id
 ```
 
 
@@ -587,6 +648,7 @@ Again, the table should be keyed on the column `option_id`.**
 
 ```q
 //your code here - or work in the scratchpad
+edgeProfileFull:edgeProfile lj 1!(optRef lj (1!instRef))
 ```
 ### End of Sub Section testing
 
